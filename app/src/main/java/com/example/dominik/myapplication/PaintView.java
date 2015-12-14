@@ -28,7 +28,7 @@ public class PaintView extends View {
         mPaintLines.setStyle(Paint.Style.STROKE);
         mPaintLines.setStrokeJoin(Paint.Join.ROUND);
         mPaintLines.setStrokeWidth(STROKE_WIDTH);
-        mPaintLines.setTextSize(1000f);
+        mPaintLines.setTextSize(500f);
 
         mPaintDots = new Paint();
         mPaintDots.setAntiAlias(true);
