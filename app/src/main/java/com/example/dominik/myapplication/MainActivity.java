@@ -32,6 +32,24 @@ public class MainActivity extends ActionBarActivity {
 
 
     }
+    public void OnClickButtonSettings(View view){ //ob pritisku na gumb learn odpri learn activity
+        Intent intent = new Intent(this,settings.class);
+        startActivity(intent);
+
+
+    }
+    public void OnClickButtonTest(View view){ //ob pritisku na gumb learn odpri learn activity
+        Intent intent = new Intent(this,test.class);
+        startActivity(intent);
+
+
+    }
+    public void OnClickButtonStatistics(View view){ //ob pritisku na gumb learn odpri learn activity
+        Intent intent = new Intent(this,statistics.class);
+        startActivity(intent);
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

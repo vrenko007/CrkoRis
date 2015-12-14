@@ -22,6 +22,15 @@
         <activity
             android:name=".learn"
             android:label="Learn"></activity>
+        <activity
+            android:name=".test"
+            android:label="Test"></activity>
+        <activity
+            android:name=".settings"
+            android:label="Settings"></activity>
+        <activity
+            android:name=".statistics"
+            android:label="Statistics"></activity>
         <intent-filter>
             <action android:name="com.example.dominik.myapplication.learn" />
 

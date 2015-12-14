@@ -12,26 +12,20 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Language"
-        android:id="@+id/button_lang"
-        android:layout_above="@+id/button_difficulty"
+        android:text="Speed test"
+        android:id="@+id/button_speed"
+        android:layout_above="@+id/button_precision"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Difficulty"
-        android:id="@+id/button_difficulty"
+        android:text="Precision test"
+        android:id="@+id/button_precision"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Input type"
-        android:id="@+id/button_intype"
-        android:layout_below="@+id/button_difficulty"
-        android:layout_centerHorizontal="true" />
+
 
 
 </RelativeLayout>
