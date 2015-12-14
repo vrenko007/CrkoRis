@@ -11,7 +11,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="Letter Learner"
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,22 +20,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".learn"
-            android:label="Learn"></activity>
+            android:name=".LearningActivity"
+            android:label="Learn">
+            <intent-filter>
+                <action android:name="com.example.dominik.myapplication.LearningActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".test"
+            android:name=".ChallengeActivity"
             android:label="Test"></activity>
         <activity
-            android:name=".settings"
+            android:name=".SettingsActivity"
             android:label="Settings"></activity>
         <activity
-            android:name=".statistics"
+            android:name=".StatisticsActivity"
             android:label="Statistics"></activity>
-        <intent-filter>
-            <action android:name="com.example.dominik.myapplication.learn" />
-
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
     </application>
 
 </manifest>

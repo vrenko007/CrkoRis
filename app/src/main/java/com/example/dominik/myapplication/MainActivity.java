@@ -26,26 +26,29 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    public void OnClickButtonLearn(View view){ //ob pritisku na gumb learn odpri learn activity
-        Intent intent = new Intent(this,learn.class);
+    public void OnClickButtonLearn(View view) { //ob pritisku na gumb LearningActivity odpri LearningActivity activity
+        Intent intent = new Intent(this, LearningActivity.class);
         startActivity(intent);
 
 
     }
-    public void OnClickButtonSettings(View view){ //ob pritisku na gumb learn odpri learn activity
-        Intent intent = new Intent(this,settings.class);
+
+    public void OnClickButtonSettings(View view) { //ob pritisku na gumb LearningActivity odpri LearningActivity activity
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
 
 
     }
-    public void OnClickButtonTest(View view){ //ob pritisku na gumb learn odpri learn activity
-        Intent intent = new Intent(this,test.class);
+
+    public void OnClickButtonTest(View view) { //ob pritisku na gumb LearningActivity odpri LearningActivity activity
+        Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
 
 
     }
-    public void OnClickButtonStatistics(View view){ //ob pritisku na gumb learn odpri learn activity
-        Intent intent = new Intent(this,statistics.class);
+
+    public void OnClickButtonStatistics(View view) { //ob pritisku na gumb LearningActivity odpri LearningActivity activity
+        Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
 
 

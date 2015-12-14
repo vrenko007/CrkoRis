@@ -10,11 +10,11 @@ import android.view.View;
 
 public class PaintView extends View {
 
+    private static final float TOLERANCE = 5;
+    private static final float STROKE_WIDTH = 10;
     private Path mPathLines,mPathDots;
     private Paint mPaintLines,mPaintDots;
     private float mX, mY;
-    private static final float TOLERANCE = 5;
-    private static final float STROKE_WIDTH = 10;
 
     public PaintView(Context c) {
         super(c);
@@ -28,7 +28,7 @@ public class PaintView extends View {
         mPaintLines.setStyle(Paint.Style.STROKE);
         mPaintLines.setStrokeJoin(Paint.Join.ROUND);
         mPaintLines.setStrokeWidth(STROKE_WIDTH);
-        mPaintLines.setTextSize(500f);
+        mPaintLines.setTextSize(500f * getResources().getDisplayMetrics().density);
 
         mPaintDots = new Paint();
         mPaintDots.setAntiAlias(true);

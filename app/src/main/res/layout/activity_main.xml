@@ -10,38 +10,38 @@
     tools:context="com.example.dominik.myapplication.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TEST"
-        android:id="@+id/button_test"
-        android:onClick="OnClickButtonTest"
-        android:layout_above="@+id/button_learn"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LEARN"
         android:id="@+id/button_learn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:onClick="OnClickButtonLearn"
-        android:layout_centerHorizontal="true" />
+        android:text="LEARNING" />
 
     <Button
+        android:id="@+id/button_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SETTINGS"
-        android:onClick="OnClickButtonSettings"
+        android:layout_above="@+id/button_learn"
+        android:layout_centerHorizontal="true"
+        android:onClick="OnClickButtonTest"
+        android:text="CHALLENGES" />
+
+    <Button
         android:id="@+id/button_settings"
-        android:layout_below="@+id/button_learn"
-        android:layout_centerHorizontal="true" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="STATISTICS"
-        android:onClick="OnClickButtonStatistics"
+        android:layout_below="@+id/button_learn"
+        android:layout_centerHorizontal="true"
+        android:onClick="OnClickButtonSettings"
+        android:text="SETTINGS" />
+
+    <Button
         android:id="@+id/button_statistic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/button_settings"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="OnClickButtonStatistics"
+        android:text="STATISTICS" />
 </RelativeLayout>
