@@ -7,11 +7,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ChallengeActivity">
+    tools:context=".activities.ChallengeActivity">
 
     <Button
         android:id="@+id/button_speed"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_precision"
         android:layout_centerHorizontal="true"
@@ -19,7 +19,7 @@
 
     <Button
         android:id="@+id/button_precision"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
