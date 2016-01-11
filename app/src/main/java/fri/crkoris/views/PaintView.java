@@ -80,15 +80,10 @@ public class PaintView extends View {
 
         Rect rect = new Rect();
         mPaint.getTextBounds(mCharacter, 0, 1, rect);
-        int dy = canvas.getHeight() / 2 + rect.height() / 2;
-        left = canvas.getWidth() / 2 - rect.width() / 2;
-        right = canvas.getWidth() / 2 + rect.width() / 2;
-        top = canvas.getHeight() / 2 - rect.height() / 2 + (yPos - dy);
-        bottom = canvas.getHeight() / 2 + rect.height() / 2 + (yPos - dy);
-        if(mCharacter.equals("j") || mCharacter.equals("g")){
-            top+=mPaint.descent();
-            bottom+=mPaint.descent();
-        }
+        left = xPos - rect.width() / 2;
+        right = xPos + rect.width() / 2;
+        top = yPos + rect.top;
+        bottom = yPos + rect.bottom;
 
         for (int x = left; x < right; x++) {
             for (int y = top; y < bottom; y++) {
