@@ -11,9 +11,8 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="fri.crkoris.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name">
             <intent-filter>
@@ -23,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="fri.crkoris.activities.LearningActivity"
+            android:name=".activities.LearningActivity"
             android:label="Learn"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -33,17 +32,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="fri.crkoris.activities.ChallengeActivity"
+            android:name=".activities.ChallengeActivity"
             android:label="Test" />
         <activity
-            android:name="fri.crkoris.activities.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="Settings" />
         <activity
-            android:name="fri.crkoris.activities.StatisticsActivity"
+            android:name=".activities.StatisticsActivity"
             android:label="Statistics" />
         <activity
-            android:name="fri.crkoris.activities.DrawActivity"
+            android:name=".activities.DrawActivity"
             android:label="@string/title_activity_draw" />
+        <activity android:name=".activities.LanguageActivity"></activity>
     </application>
 
 </manifest>

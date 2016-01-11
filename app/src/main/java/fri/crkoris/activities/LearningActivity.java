@@ -20,21 +20,42 @@ import fri.crkoris.models.CharacterModel;
 
 public class LearningActivity extends Activity {
 
-    static final String[] firstTimeSetUp = new String[]{
+    static final String[] firstTimeSetUpEn = new String[]{
             "A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f", "G", "g", "H", "h",
             "I", "i", "J", "j", "K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p",
             "Q", "q", "R", "r", "S", "s", "T", "t", "U", "u", "V", "v", "W", "w", "X", "x",
             "Y", "y", "Z", "z"
     };
+    static final String[] firstTimeSetUpSlo = new String[]{
+            "A", "a", "B", "b", "C", "c", "Č", "č", "D", "d", "E", "e", "F", "f", "G", "g", "H", "h",
+            "I", "i", "J", "j", "K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p",
+            "R", "r", "S", "s", "Š", "š", "T", "t", "U", "u", "V", "v",
+            "Z", "z", "Ž", "ž"
+    };
+    static final String[] firstTimeSetUpJapKatakana = new String[]{
+            "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ",
+            "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ",
+            "ユ", "ヨ", "ラ", "リ", "ル", "レ", "ロ", "ガ", "ギ", "グ", "ゲ", "ゴ", "ザ", "ジ", "ズ", "ゼ", "ゾ", "ダ",
+            "ヂ", "ヅ", "デ", "ド", "バ", "ビ", "ブ", "ベ", "ボ", "パ", "ピ", "プ", "ペ", "ポ", "ン"
+    };
+    static final String[] firstTimeSetUpJapKNormal = new String[]{
+            "a", "i", "u", "e", "o", "ka", "ki", "ku", "ke", "ko", "sa", "shi", "su", "se", "so", "ta", "chi", "tsu",
+            "te", "to", "na", "ni", "nu", "ne", "no", "ha", "hi", "fu", "he", "ho", "ma", "mi", "mu", "me", "mo",
+            "ya", "yu", "yo", "ra", "ri", "ru", "re", "ro", "ga", "gi", "gu", "ge", "go", "za", "dzi", "zu", "ze",
+            "zo", "da", "dzi", "dzu", "de", "do", "ba", "bi", "bu", "be", "bo", "pa", "pi", "pu", "pe", "po", "n"
+    };
     ListView mListView;
     EditText mFilterView;
     CharacterAdapter mAdapter;
+    String language;
     boolean firstTime = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firstTime = true;
+        Intent intent = getIntent();
+        language = intent.getStringExtra("language");
         setContentView(R.layout.activity_learn);
         mListView = (ListView) findViewById(R.id.learn_list);
         mFilterView = (EditText) findViewById(R.id.learn_filter);
@@ -80,6 +101,7 @@ public class LearningActivity extends Activity {
                 CharacterModel itemValue = (CharacterModel) parent.getAdapter().getItem(position);
                 Intent intent = new Intent(LearningActivity.this, DrawActivity.class);
                 intent.putExtra("character", itemValue);
+                intent.putExtra("language", language);
                 intent.putExtra("position", itemValue.getPosition());
                 startActivity(intent);
             }
@@ -93,22 +115,33 @@ public class LearningActivity extends Activity {
 
     private CharacterModel[] retrieveSavedData() {
         SharedPreferences savedData = PreferenceManager.getDefaultSharedPreferences(this);
-        String results_string = savedData.getString("learning_results", "");
+        String results_string = savedData.getString(language + "_lrn", "");
         Gson gson = new Gson();
-        CharacterModel[] mEnglish;
+        CharacterModel[] mCharacters;
         if (!results_string.equals("")) {
-            mEnglish = gson.fromJson(results_string, CharacterModel[].class);
+            mCharacters = gson.fromJson(results_string, CharacterModel[].class);
         } else {
-            mEnglish = new CharacterModel[firstTimeSetUp.length];
-            for (int i = 0; i < mEnglish.length; i++)
-                mEnglish[i] = new CharacterModel(firstTimeSetUp[i], firstTimeSetUp[i], i, -1, 0);
+            if (language.equals("en")) {
+                mCharacters = new CharacterModel[firstTimeSetUpEn.length];
+                for (int i = 0; i < mCharacters.length; i++)
+                    mCharacters[i] = new CharacterModel(firstTimeSetUpEn[i], firstTimeSetUpEn[i], i, -1, 0);
+            } else if (language.equals("slo")) {
+                mCharacters = new CharacterModel[firstTimeSetUpSlo.length];
+                for (int i = 0; i < mCharacters.length; i++)
+                    mCharacters[i] = new CharacterModel(firstTimeSetUpSlo[i], firstTimeSetUpSlo[i], i, -1, 0);
+            } else if (language.equals("jap")) {
+                mCharacters = new CharacterModel[firstTimeSetUpJapKatakana.length];
+                for (int i = 0; i < mCharacters.length; i++)
+                    mCharacters[i] = new CharacterModel(firstTimeSetUpJapKatakana[i], firstTimeSetUpJapKNormal[i], i, -1, 0);
+            } else
+                return new CharacterModel[1];
 
             SharedPreferences.Editor editor;
             editor = savedData.edit();
-            editor.putString("learning_results", gson.toJson(mEnglish));
-            editor.commit();
+            editor.putString(language + "_lrn", gson.toJson(mCharacters));
+            editor.apply();
         }
-        return mEnglish;
+        return mCharacters;
     }
 
 }

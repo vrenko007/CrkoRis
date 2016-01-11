@@ -17,6 +17,7 @@ import fri.crkoris.views.PaintView;
 public class DrawActivity extends Activity {
 
     CharacterModel mCharacter;
+    String language;
     private PaintView myView;
     private int mListPosition;
 
@@ -30,6 +31,7 @@ public class DrawActivity extends Activity {
         myView = (PaintView) findViewById(R.id.paint_view_id);
         mCharacter = intent.getParcelableExtra("character");
         mListPosition = intent.getIntExtra("position", -1);
+        language = intent.getStringExtra("language");
         myView.setCharacter(mCharacter.getName(), mCharacter.getWellKnown());
     }
 
@@ -41,29 +43,30 @@ public class DrawActivity extends Activity {
         float accuracy = (100 * myView.mHits / (float) myView.mTries);
         float filled = (float) (myView.finalizeBitmap() * 100 * 2.5);
         int score = (int) (accuracy * filled * 0.1);
-        if (score < 0) score = 0;
         saveResult(score);
         score_text.setText(Integer.toString(score));
     }
 
     private boolean saveResult(int score) {
         SharedPreferences savedData = PreferenceManager.getDefaultSharedPreferences(this);
-        String results_string = savedData.getString("learning_results", "");
+        String results_string = savedData.getString(language + "_lrn", "");
         final CharacterModel[] results;
         Gson gson = new Gson();
         if (!results_string.equals("")) {
             results = gson.fromJson(results_string, CharacterModel[].class);
             SharedPreferences.Editor editor;
             editor = savedData.edit();
+            int cutoff = 900;
+            if (language.equals("jap")) cutoff = 750;
             int known = results[mListPosition].getWellKnown();
             if (score > results[mListPosition].getScore())
                 results[mListPosition].setScore(score);
-            if (score > 900 && known < 10)
+            if (score > cutoff && known < 10)
                 results[mListPosition].setWellKnown(++known);
-            else if (score < 900 && known > 0)
+            else if (score < cutoff && known > 0)
                 results[mListPosition].setWellKnown(--known);
-            editor.putString("learning_results", gson.toJson(results));
-            editor.commit();
+            editor.putString(language + "_lrn", gson.toJson(results));
+            editor.apply();
             return true;
         }
         return false;

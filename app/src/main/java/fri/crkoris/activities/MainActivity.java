@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
 
 
     public void OnClickButtonLearn(View view) {
-        Intent intent = new Intent(this, LearningActivity.class);
+        Intent intent = new Intent(this, LanguageActivity.class);
         startActivity(intent);
     }
 
