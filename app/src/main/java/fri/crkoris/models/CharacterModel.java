@@ -22,34 +22,37 @@ public class CharacterModel implements Parcelable {
     String name;
     String normalized;
     int position;
-    int accuracy;
+    int score;
+    int well_known;
 
-    public CharacterModel(String name, String ascii, int position, int accuracy) {
+    public CharacterModel(String name, String ascii, int position, int accuracy,int well_known) {
         this.name = name;
         this.normalized = ascii;
         this.position = position;
-        this.accuracy = accuracy;
+        this.score = accuracy;
+        this.well_known = well_known;
     }
 
-    public CharacterModel(Parcel in) {
+    protected CharacterModel(Parcel in) {
         name = in.readString();
         normalized = in.readString();
         position = in.readInt();
-        accuracy = in.readInt();
+        score = in.readInt();
+        well_known = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(normalized);
+        dest.writeInt(position);
+        dest.writeInt(score);
+        dest.writeInt(well_known);
     }
 
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-        parcel.writeString(name);
-        parcel.writeString(normalized);
-        parcel.writeInt(position);
-        parcel.writeInt(accuracy);
     }
 
     public String getName() {
@@ -76,11 +79,19 @@ public class CharacterModel implements Parcelable {
         this.position = position;
     }
 
-    public int getAccuracy() {
-        return accuracy;
+    public int getScore() {
+        return score;
     }
 
-    public void setAccuracy(int accuracy) {
-        this.accuracy = accuracy;
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getWellKnown() {
+        return well_known;
+    }
+
+    public void setWellKnown(int well_known) {
+        this.well_known = well_known;
     }
 }

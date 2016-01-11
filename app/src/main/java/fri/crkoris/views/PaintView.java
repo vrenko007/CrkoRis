@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,11 +16,15 @@ public class PaintView extends View {
     private static final float TOLERANCE = 5;
     private static final float STROKE_WIDTH = 30f;
     public int mHits, mTries;
+    public Bitmap mBitmap;
     private Path mPath;
     private Paint mPaint;
     private float mX, mY;
     private String mCharacter;
+    private int mTextColor;
     private float w, h;
+    private int xPos, yPos;
+    private int black_pixel_count;
 
     public PaintView(Context c) {
         super(c);
@@ -39,7 +44,7 @@ public class PaintView extends View {
     private void init() {
         this.setDrawingCacheEnabled(true);
         mPath = new Path();
-
+        mTextColor = Color.argb(255, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setTextAlign(Paint.Align.CENTER);
@@ -58,17 +63,48 @@ public class PaintView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         this.w = w;
         this.h = h;
+        setUpBitmap();
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    public Bitmap getUnderlyingBitmap() {
-        return this.getDrawingCache();
+    private void setUpBitmap() {
+        int width = (int) w, height = (int) h;
+        this.mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mBitmap);
+        xPos = (canvas.getWidth() / 2);
+        yPos = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));
+        mPaint.setStyle(Paint.Style.FILL);
+        canvas.drawText(mCharacter, xPos, yPos, mPaint);
+        mPaint.setStyle(Paint.Style.STROKE);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (mBitmap.getPixel(x, y) == Color.BLACK)
+                    black_pixel_count++;
+            }
+        }
     }
 
+    public float finalizeBitmap() {
+        Canvas canvas = new Canvas(mBitmap);
+        mPaint.setColor(Color.RED);
+        canvas.drawPath(mPath, mPaint);
+        int black_count = 0;
+        int width = (int) w, height = (int) h;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (mBitmap.getPixel(x, y) == Color.BLACK)
+                    black_count++;
+            }
+        }
+        float result = (float) black_count / black_pixel_count;
+        return 1 - result;
+    }
+
+
     private boolean isInside(float x, float y) {
-        Bitmap b = getUnderlyingBitmap();
-        int pixel = b.getPixel((int) x, (int) y);
-        return pixel == Color.LTGRAY || pixel == Color.BLACK;
+        int pixel = mBitmap.getPixel((int) x, (int) y);
+        return pixel == Color.BLACK;
     }
 
 
@@ -76,15 +112,22 @@ public class PaintView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int xPos = (canvas.getWidth() / 2);
-        int yPos = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));
-        canvas.drawText(mCharacter, xPos, yPos, mPaint);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(Color.LTGRAY);
+        mPaint.setColor(mTextColor);
         canvas.drawText(mCharacter, xPos, yPos, mPaint);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.BLACK);
         canvas.drawPath(mPath, mPaint);
+        Rect rect = new Rect();
+        mPaint.getTextBounds(mCharacter, 0, 1, rect);
+        mPaint.setStrokeWidth(1);
+        int bottom = canvas.getHeight() / 2 + rect.height() / 2;
+        canvas.drawRect(canvas.getWidth() / 2 - rect.width() / 2,
+                canvas.getHeight() / 2 - rect.height() / 2 + (yPos - bottom),
+                canvas.getWidth() / 2 + rect.width() / 2,
+                bottom + (yPos - bottom)
+                , mPaint);
+        mPaint.setStrokeWidth(STROKE_WIDTH);
 
     }
 
@@ -135,8 +178,10 @@ public class PaintView extends View {
         return true;
     }
 
-    public void setCharacter(String character) {
+    public void setCharacter(String character, int known) {
         this.mCharacter = character;
+        int alpha = 10 * (10 - known);
+        mTextColor = Color.argb(alpha, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
         invalidate();
     }
 }

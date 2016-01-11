@@ -101,7 +101,7 @@ public class LearningActivity extends Activity {
         } else {
             mEnglish = new CharacterModel[firstTimeSetUp.length];
             for (int i = 0; i < mEnglish.length; i++)
-                mEnglish[i] = new CharacterModel(firstTimeSetUp[i], firstTimeSetUp[i], i, -1);
+                mEnglish[i] = new CharacterModel(firstTimeSetUp[i], firstTimeSetUp[i], i, -1, 0);
 
             SharedPreferences.Editor editor;
             editor = savedData.edit();

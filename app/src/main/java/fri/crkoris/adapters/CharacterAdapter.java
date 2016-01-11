@@ -45,9 +45,10 @@ public class CharacterAdapter extends ArrayAdapter<CharacterModel> implements Fi
     }
 
     public void updateData(CharacterModel[] values) {
-        for (int i = 0; i < values.length; i++)
-            if (values[i].getAccuracy() != mData[i].getAccuracy())
-                mData[i].setAccuracy(values[i].getAccuracy());
+        for (int i = 0; i < values.length; i++) {
+            mData[i].setScore(values[i].getScore());
+            mData[i].setWellKnown(values[i].getWellKnown());
+        }
         notifyDataSetChanged();
     }
 
@@ -60,8 +61,8 @@ public class CharacterAdapter extends ArrayAdapter<CharacterModel> implements Fi
         if (position >= mFilteredData.length)
             return convertView;
         textView1.setText(mFilteredData[position].getName());
-        if (mFilteredData[position].getAccuracy() != -1)
-            textView2.setText(String.format("Top accuracy was: %d%%", mFilteredData[position].getAccuracy()));
+        if (mFilteredData[position].getScore() != -1)
+            textView2.setText(String.format("Your top score was: %d", mFilteredData[position].getScore()));
         else
             textView2.setText("Not yet completed");
         return convertView;
