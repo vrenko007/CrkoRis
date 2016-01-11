@@ -25,6 +25,7 @@ public class PaintView extends View {
     private float w, h;
     private int xPos, yPos;
     private int black_pixel_count;
+    private int left,top,right,bottom;
 
     public PaintView(Context c) {
         super(c);
@@ -77,8 +78,20 @@ public class PaintView extends View {
         canvas.drawText(mCharacter, xPos, yPos, mPaint);
         mPaint.setStyle(Paint.Style.STROKE);
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        Rect rect = new Rect();
+        mPaint.getTextBounds(mCharacter, 0, 1, rect);
+        int dy = canvas.getHeight() / 2 + rect.height() / 2;
+        left = canvas.getWidth() / 2 - rect.width() / 2;
+        right = canvas.getWidth() / 2 + rect.width() / 2;
+        top = canvas.getHeight() / 2 - rect.height() / 2 + (yPos - dy);
+        bottom = canvas.getHeight() / 2 + rect.height() / 2 + (yPos - dy);
+        if(mCharacter.equals("j") || mCharacter.equals("g")){
+            top+=mPaint.descent();
+            bottom+=mPaint.descent();
+        }
+
+        for (int x = left; x < right; x++) {
+            for (int y = top; y < bottom; y++) {
                 if (mBitmap.getPixel(x, y) == Color.BLACK)
                     black_pixel_count++;
             }
@@ -90,9 +103,8 @@ public class PaintView extends View {
         mPaint.setColor(Color.RED);
         canvas.drawPath(mPath, mPaint);
         int black_count = 0;
-        int width = (int) w, height = (int) h;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int x = left; x < right; x++) {
+            for (int y = top; y < bottom; y++) {
                 if (mBitmap.getPixel(x, y) == Color.BLACK)
                     black_count++;
             }
@@ -118,15 +130,8 @@ public class PaintView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.BLACK);
         canvas.drawPath(mPath, mPaint);
-        Rect rect = new Rect();
-        mPaint.getTextBounds(mCharacter, 0, 1, rect);
         mPaint.setStrokeWidth(1);
-        int bottom = canvas.getHeight() / 2 + rect.height() / 2;
-        canvas.drawRect(canvas.getWidth() / 2 - rect.width() / 2,
-                canvas.getHeight() / 2 - rect.height() / 2 + (yPos - bottom),
-                canvas.getWidth() / 2 + rect.width() / 2,
-                bottom + (yPos - bottom)
-                , mPaint);
+        canvas.drawRect(left,top,right,bottom,mPaint);
         mPaint.setStrokeWidth(STROKE_WIDTH);
 
     }
