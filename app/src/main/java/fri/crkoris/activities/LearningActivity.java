@@ -14,6 +14,10 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import fri.crkoris.R;
 import fri.crkoris.adapters.CharacterAdapter;
 import fri.crkoris.models.CharacterModel;
@@ -121,15 +125,15 @@ public class LearningActivity extends Activity {
         if (!results_string.equals("")) {
             mCharacters = gson.fromJson(results_string, CharacterModel[].class);
         } else {
-            if (language.equals("en")) {
+            if (language.equals("english")) {
                 mCharacters = new CharacterModel[firstTimeSetUpEn.length];
                 for (int i = 0; i < mCharacters.length; i++)
                     mCharacters[i] = new CharacterModel(firstTimeSetUpEn[i], firstTimeSetUpEn[i], i, -1, 0);
-            } else if (language.equals("slo")) {
+            } else if (language.equals("slovene")) {
                 mCharacters = new CharacterModel[firstTimeSetUpSlo.length];
                 for (int i = 0; i < mCharacters.length; i++)
                     mCharacters[i] = new CharacterModel(firstTimeSetUpSlo[i], firstTimeSetUpSlo[i], i, -1, 0);
-            } else if (language.equals("jap")) {
+            } else if (language.equals("japanese")) {
                 mCharacters = new CharacterModel[firstTimeSetUpJapKatakana.length];
                 for (int i = 0; i < mCharacters.length; i++)
                     mCharacters[i] = new CharacterModel(firstTimeSetUpJapKatakana[i], firstTimeSetUpJapKNormal[i], i, -1, 0);

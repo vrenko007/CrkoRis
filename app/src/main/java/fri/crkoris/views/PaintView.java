@@ -53,7 +53,7 @@ public class PaintView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(STROKE_WIDTH);
-        mPaint.setTextSize(500f * getResources().getDisplayMetrics().density);
+        mPaint.setTextSize(200f * getResources().getDisplayMetrics().density);
 
         mCharacter = "A";
         mHits = 0;
@@ -89,7 +89,6 @@ public class PaintView extends View {
             top+=mPaint.descent();
             bottom+=mPaint.descent();
         }
-
         for (int x = left; x < right; x++) {
             for (int y = top; y < bottom; y++) {
                 if (mBitmap.getPixel(x, y) == Color.BLACK)
