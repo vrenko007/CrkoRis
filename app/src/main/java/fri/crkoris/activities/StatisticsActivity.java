@@ -57,8 +57,12 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
             String results_string = savedData.getString(lang + "_lrn", "");
             if (!results_string.equals("")) {
                 mCharacters = gson.fromJson(results_string, CharacterModel[].class);
-                LangMap.put(lang,mCharacters);
+                LangMap.put(lang, mCharacters);
             }
+            else{
+                LangMap.put(lang, new CharacterModel[0]);
+            }
+
         }
         return LangMap;
     }
@@ -66,20 +70,24 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
     private Map<String,String[]> getAllScores(Map<String,CharacterModel[]> map){
         Map<String,String[]> results = new HashMap<String, String[]>();
         int minTotal = 0;
-        String minLetterTotal = "";
+        String minLetterTotal = "/";
         int maxTotal = 0;
-        String maxLetterTotal = "";
+        String maxLetterTotal = "/";
         int totalTotal = 0;
         int length = 0;
         for(Map.Entry<String,CharacterModel[]> entry : map.entrySet()){
+            if(entry.getValue().length == 0){
+                results.put(entry.getKey(), new String[] {"0","0","/","0","/","0"});
+                continue;
+            }
             length += entry.getValue().length;
-            int min = 0;
+            int min = 5;
             String minLetter = "";
-            int max = 0;
+            int max = -1;
             String maxLetter = "";
             int total = 0;
             for(CharacterModel cm : entry.getValue()){
-                int score = cm.getScore();
+                int score = cm.getScore() == -1 ? 0 : cm.getScore();
                 if(score > max){
                     max = score;
                     maxLetter = cm.getName();
@@ -99,26 +107,13 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
                 minTotal = min;
                 minLetterTotal = minLetter;
             }
-            if(entry.getValue().length!=0){
+            int average = total / entry.getValue().length;
 
-                int average = total / entry.getValue().length;
-                results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
-            }else {
-                int average =0;
-                results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
-            }
-
-        }
-        if(length!=0) {
-            int averageTotal = totalTotal / length;
-            results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
-        }else{
-            int averageTotal = 0;
-            results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
+            results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
         }
 
-
-
+        int averageTotal = length == 0 ? 0 : totalTotal / length;
+        results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
         return results;
     }
 
@@ -129,45 +124,12 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
         String language = parent.getItemAtPosition(position).toString();
         String[] results = langMap.get(language);
 
-         //pogledamo ce je rezultat null se pravi da uporabnik ni nic vnasal
-
-
-        if(results[0] == null) {
-            results[0] = "0";
-        }else{
-            if (Integer.parseInt(results[0]) <= 0) {
-                results[0] = "0";
-            }
-        }
-        if(results[1] == null) {
-            results[1] = "0";
-        }else{
-            if (Integer.parseInt(results[1]) <= 0) {
-                results[1] = "0";
-            }
-        }
-        if(results[3] == null) {
-            results[3] = "0";
-        }else{
-            if (Integer.parseInt(results[3]) <= 0) {
-                results[3] = "0";
-            }
-        }
-        if(results[5] == null) {
-            results[5] = "0";
-        }else{
-            if (Integer.parseInt(results[5]) <= 0) {
-                results[5] = "0";
-            }
-        }
-        ((TextView)findViewById(R.id.TV_totalScore)).setText("Your total score is : "+results[0]);
+        ((TextView)findViewById(R.id.TV_totalScore)).setText("Your total score is : " + results[0]);
         ((TextView)findViewById(R.id.TV_avScore)).setText("Your average score is : " + results[1]);
+        ((TextView)findViewById(R.id.TV_maxLetter)).setText("You scored highest on letter '"+results[2]+"' with score of "+results[3]);
+        ((TextView)findViewById(R.id.TV_minLetter)).setText("You scored lowest on letter '"+results[4]+"' with score of "+results[5]);
+        ((TextView)findViewById(R.id.TV_language)).setText(language.toUpperCase());
 
-        if(Integer.parseInt(results[0]) > 0 && Integer.parseInt(results[1]) > 0 || !(results[0] == null || results[1] == null)){
-            ((TextView)findViewById(R.id.TV_maxLetter)).setText("You scored highest on letter '"+results[2]+"' with score of "+results[3]);
-            ((TextView)findViewById(R.id.TV_minLetter)).setText("You scored lowest on letter '"+results[4]+"' with score of "+results[5]);
-            ((TextView)findViewById(R.id.TV_language)).setText(language);
-        }
 
 
     }
