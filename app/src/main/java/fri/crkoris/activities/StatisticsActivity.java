@@ -99,11 +99,26 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
                 minTotal = min;
                 minLetterTotal = minLetter;
             }
-            int average = total / entry.getValue().length;
-            results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
+            if(entry.getValue().length!=0){
+
+                int average = total / entry.getValue().length;
+                results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
+            }else {
+                int average =0;
+                results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
+            }
+
         }
-        int averageTotal = totalTotal / length;
-        results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
+        if(length!=0) {
+            int averageTotal = totalTotal / length;
+            results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
+        }else{
+            int averageTotal = 0;
+            results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
+        }
+
+
+
         return results;
     }
 
