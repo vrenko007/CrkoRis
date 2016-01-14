@@ -129,11 +129,47 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
         String language = parent.getItemAtPosition(position).toString();
         String[] results = langMap.get(language);
 
+         //pogledamo ce je rezultat null se pravi da uporabnik ni nic vnasal
+
+
+        if(results[0] == null) {
+            results[0] = "0";
+        }else{
+            if (Integer.parseInt(results[0]) <= 0) {
+                results[0] = "0";
+            }
+        }
+        if(results[1] == null) {
+            results[1] = "0";
+        }else{
+            if (Integer.parseInt(results[1]) <= 0) {
+                results[1] = "0";
+            }
+        }
+        if(results[3] == null) {
+            results[3] = "0";
+        }else{
+            if (Integer.parseInt(results[3]) <= 0) {
+                results[3] = "0";
+            }
+        }
+        if(results[5] == null) {
+            results[5] = "0";
+        }else{
+            if (Integer.parseInt(results[5]) <= 0) {
+                results[5] = "0";
+            }
+        }
         ((TextView)findViewById(R.id.TV_totalScore)).setText("Your total score is : "+results[0]);
-        ((TextView)findViewById(R.id.TV_avScore)).setText("Your average score is : "+results[1]);
-        ((TextView)findViewById(R.id.TV_maxLetter)).setText("You scored highest on letter '"+results[2]+"' with score of "+results[3]);
-        ((TextView)findViewById(R.id.TV_minLetter)).setText("You scored lowest on letter '"+results[4]+"' with score of "+results[5]);
-        ((TextView)findViewById(R.id.TV_language)).setText(language);
+        ((TextView)findViewById(R.id.TV_avScore)).setText("Your average score is : " + results[1]);
+
+        if(Integer.parseInt(results[0]) > 0 && Integer.parseInt(results[1]) > 0 || !(results[0] == null || results[1] == null)){
+            ((TextView)findViewById(R.id.TV_maxLetter)).setText("You scored highest on letter '"+results[2]+"' with score of "+results[3]);
+            ((TextView)findViewById(R.id.TV_minLetter)).setText("You scored lowest on letter '"+results[4]+"' with score of "+results[5]);
+            ((TextView)findViewById(R.id.TV_language)).setText(language);
+        }
+
+
     }
 
     @Override
