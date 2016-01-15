@@ -9,6 +9,8 @@ import fri.crkoris.R;
 
 public class LanguageActivity extends Activity {
 
+    public static String[] langs = {"english","slovene","japanese"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,19 +19,19 @@ public class LanguageActivity extends Activity {
 
     public void pickEnglish(View v) {
         Intent intent = new Intent(LanguageActivity.this, LearningActivity.class);
-        intent.putExtra("language", "en");
+        intent.putExtra("language", "english");
         startActivity(intent);
     }
 
     public void pickSlovenian(View v) {
         Intent intent = new Intent(LanguageActivity.this, LearningActivity.class);
-        intent.putExtra("language", "slo");
+        intent.putExtra("language", "slovene");
         startActivity(intent);
     }
 
     public void pickJapanese(View v) {
         Intent intent = new Intent(LanguageActivity.this, LearningActivity.class);
-        intent.putExtra("language", "jap");
+        intent.putExtra("language", "japanese");
         startActivity(intent);
     }
 }
