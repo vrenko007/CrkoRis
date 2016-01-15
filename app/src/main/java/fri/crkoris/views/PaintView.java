@@ -14,7 +14,7 @@ import android.view.View;
 public class PaintView extends View {
 
     private static final float TOLERANCE = 5;
-    private static final float STROKE_WIDTH = 30f;
+    private static final float STROKE_WIDTH = 40f;
     public int mHits, mTries;
     public Bitmap mBitmap;
     private Path mPath;
@@ -53,7 +53,7 @@ public class PaintView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(STROKE_WIDTH);
-        mPaint.setTextSize(500f * getResources().getDisplayMetrics().density);
+        mPaint.setTextSize(350 * getResources().getDisplayMetrics().density);
 
         mCharacter = "A";
         mHits = 0;
@@ -180,7 +180,9 @@ public class PaintView extends View {
 
     public void setCharacter(String character, int known) {
         this.mCharacter = character;
-        int alpha = 10 * (10 - known);
+        int alpha = 10;
+        if (known == 0) alpha = 75;
+        else if (known == 1) alpha = 25;
         mTextColor = Color.argb(alpha, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
         invalidate();
     }
