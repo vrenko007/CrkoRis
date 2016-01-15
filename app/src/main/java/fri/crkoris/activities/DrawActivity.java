@@ -6,16 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import java.util.Timer;
 
 import fri.crkoris.R;
 import fri.crkoris.models.CharacterModel;
@@ -23,11 +19,11 @@ import fri.crkoris.views.PaintView;
 
 public class DrawActivity extends Activity {
 
+    public static int score;
     CharacterModel mCharacter;
     String language;
     private PaintView myView;
     private int mListPosition;
-    public static int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +38,8 @@ public class DrawActivity extends Activity {
             language = intent.getStringExtra("language");
             myView.setCharacter(mCharacter.getName(), mCharacter.getWellKnown());
         } else{
-            setContentView(R.layout.activity_drawchallenge);
-            myView = (PaintView) findViewById(R.id.paint_view_id2);
+            //setContentView(R.layout.activity_drawchallenge);
+            //myView = (PaintView) findViewById(R.id.paint_view_id2);
             myView.setCharacter(mCharacter.getName(), mCharacter.getWellKnown());
             ChallengeMode();
         }
@@ -55,7 +51,7 @@ public class DrawActivity extends Activity {
                 if(millisUntilFinished<2000){
                     String sc = showScore();
                     score += Integer.parseInt(sc);
-                    ((TextView)findViewById(R.id.TV_drawscore)).setText("You scored : " + sc);
+                    //((TextView)findViewById(R.id.TV_drawscore)).setText("You scored : " + sc);
                 }
                 else{
                     final Toast toast = Toast.makeText(getApplicationContext(), String.valueOf((millisUntilFinished-2000) / 1000), Toast.LENGTH_SHORT);
@@ -97,7 +93,7 @@ public class DrawActivity extends Activity {
         TextView score_text = (TextView) findViewById(R.id.score_text);
         text.setText(R.string.accuracy_results);
         float accuracy = (100 * myView.mHits / (float) myView.mTries);
-        float fill_factor = (float) (!language.equals("jap") ? 1.5 : 1.7);
+        float fill_factor = (float) (!language.equals("japanese") ? 1.5 : 1.7);
         if (mCharacter.getWellKnown() == 2) fill_factor = 2;
         float filled = myView.finalizeBitmap() * 100 * fill_factor;
         if (filled > 100) filled = 100;
