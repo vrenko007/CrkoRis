@@ -9,7 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.DrawActivity">
+    tools:context=".activities.DrawActivity"
+    android:weightSum="1">
 
     <fri.crkoris.views.PaintView
         android:id="@+id/paint_view_id"
@@ -20,12 +21,12 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="match_parent"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/button_margins"
-        android:layout_weight="8"
         android:onClick="finished"
         android:text="Done"
-        android:typeface="serif"></Button>
+        android:typeface="serif"/>
+
 </LinearLayout>

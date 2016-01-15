@@ -9,21 +9,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.ChallengeActivity">
 
-    <Button
-        android:id="@+id/button_speed"
-        android:layout_width="200dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_precision"
-        android:layout_centerHorizontal="true"
-        android:text="Speed test" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Challenge"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="High score :"
+        android:id="@+id/TV_highscore"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/textView" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerChallenge"
+        android:prompt="@string/spinner_title"
+        android:layout_marginBottom="46dp"
+        android:layout_alignBottom="@+id/TV_highscore"
+        android:layout_alignParentEnd="true" />
 
     <Button
-        android:id="@+id/button_precision"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Start challenge"
+        android:onClick="StartChallenge"
+        android:id="@+id/StartChallenge"
+        android:layout_below="@+id/TV_highscore"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Precision test" />
+        android:layout_marginTop="67dp" />
+    android:layout_below="@+id/textView6"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="124dp"
+    android:spinnerMode="dialog" />
 
 
 

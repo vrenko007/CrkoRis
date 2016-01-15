@@ -10,7 +10,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -124,7 +123,7 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
         String language = parent.getItemAtPosition(position).toString();
         String[] results = langMap.get(language);
 
-        ((TextView)findViewById(R.id.TV_totalScore)).setText("Your total score is : " + results[0]);
+        ((TextView)findViewById(R.id.TV_totalscore)).setText("Your total score is : " + results[0]);
         ((TextView)findViewById(R.id.TV_avScore)).setText("Your average score is : " + results[1]);
         ((TextView)findViewById(R.id.TV_maxLetter)).setText("You scored highest on letter '"+results[2]+"' with score of "+results[3]);
         ((TextView)findViewById(R.id.TV_minLetter)).setText("You scored lowest on letter '"+results[4]+"' with score of "+results[5]);
