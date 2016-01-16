@@ -14,10 +14,10 @@ import android.view.View;
 public class PaintView extends View {
 
     private static final float TOLERANCE = 5;
-    private static final float STROKE_WIDTH = 40f;
+    private static float STROKE_WIDTH = 40f;
     public int mHits, mTries;
     public Bitmap mBitmap;
-    private Path mPath;
+    private Path mLinePath, mPointPath;
     private Paint mPaint;
     private float mX, mY;
     private String mCharacter;
@@ -43,33 +43,44 @@ public class PaintView extends View {
     }
 
     private void init() {
-        this.setDrawingCacheEnabled(true);
-        mPath = new Path();
+        mLinePath = new Path();
+        mPointPath = new Path();
+
         mTextColor = Color.argb(255, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setTextSize((float) (2.5 * getResources().getDisplayMetrics().xdpi));
+        STROKE_WIDTH = mPaint.getTextSize() / 16;
         mPaint.setStrokeWidth(STROKE_WIDTH);
-        mPaint.setTextSize(350 * getResources().getDisplayMetrics().density);
 
         mCharacter = "A";
         mHits = 0;
         mTries = 0;
     }
 
+    public void setCharacter(String character, int known) {
+        this.mCharacter = character;
+        int alpha = 10;
+        if (known == 0) alpha = 75;
+        else if (known == 1) alpha = 25;
+        mTextColor = Color.argb(alpha, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
+        invalidate();
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         this.w = w;
         this.h = h;
-        setUpBitmap();
+        setUpBitmap(w, h);
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    private void setUpBitmap() {
-        int width = (int) w, height = (int) h;
+    private void setUpBitmap(int width, int height) {
         this.mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mBitmap);
         xPos = (canvas.getWidth() / 2);
@@ -96,7 +107,7 @@ public class PaintView extends View {
     public float finalizeBitmap() {
         Canvas canvas = new Canvas(mBitmap);
         mPaint.setColor(Color.RED);
-        canvas.drawPath(mPath, mPaint);
+        canvas.drawPath(mLinePath, mPaint);
         int black_count = 0;
         for (int x = left; x < right; x++) {
             for (int y = top; y < bottom; y++) {
@@ -108,47 +119,41 @@ public class PaintView extends View {
         return 1 - result;
     }
 
-
     private boolean isInside(float x, float y) {
         int pixel = mBitmap.getPixel((int) x, (int) y);
         return pixel == Color.BLACK;
     }
 
-
-    // override onDraw
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mTextColor);
         canvas.drawText(mCharacter, xPos, yPos, mPaint);
-        mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.BLACK);
-        canvas.drawPath(mPath, mPaint);
+        canvas.drawPath(mPointPath, mPaint);
+        mPaint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(mLinePath, mPaint);
         mPaint.setStrokeWidth(1);
         canvas.drawRect(left,top,right,bottom,mPaint);
         mPaint.setStrokeWidth(STROKE_WIDTH);
 
     }
 
-    // when ACTION_DOWN start touch according to the x,y values
     private void touchDown(float x, float y) {
-        mPath.moveTo(x, y);
-        mPath.addCircle(x, y, STROKE_WIDTH / 4, Path.Direction.CCW);
+        mLinePath.moveTo(x, y);
+        mPointPath.addCircle(x, y, STROKE_WIDTH / 2, Path.Direction.CCW);
         mX = x;
         mY = y;
-        if (isInside(x, y)) {
-            mHits++;
-        }
+        if (isInside(x, y)) mHits++;
         mTries++;
     }
 
-    // when ACTION_MOVE move touch according to the x,y values
     private void touchMove(float x, float y) {
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOLERANCE || dy >= TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+            mLinePath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
             if (isInside(x, y)) {
@@ -158,7 +163,6 @@ public class PaintView extends View {
         }
     }
 
-    //override the onTouchEvent
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -176,14 +180,5 @@ public class PaintView extends View {
                 break;
         }
         return true;
-    }
-
-    public void setCharacter(String character, int known) {
-        this.mCharacter = character;
-        int alpha = 10;
-        if (known == 0) alpha = 75;
-        else if (known == 1) alpha = 25;
-        mTextColor = Color.argb(alpha, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
-        invalidate();
     }
 }
