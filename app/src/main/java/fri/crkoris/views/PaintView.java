@@ -27,6 +27,7 @@ public class PaintView extends View {
     private int xPos, yPos;
     private int black_pixel_count;
     private int left,top,right,bottom;
+    private float text_size;
 
     public PaintView(Context c) {
         super(c);
@@ -44,6 +45,10 @@ public class PaintView extends View {
     }
 
     private void init() {
+        mCharacter = "A";
+        mHits = 0;
+        mTries = 0;
+
         mLinePath = new Path();
         mPointPath = new Path();
 
@@ -55,38 +60,40 @@ public class PaintView extends View {
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setTextSize((float) (2.5 * getResources().getDisplayMetrics().xdpi));
-        STROKE_WIDTH = mPaint.getTextSize() / 16;
+
+        setTextSize();
+    }
+
+    private void setTextSize(){
+        float xdpi = getResources().getDisplayMetrics().xdpi;
+        text_size = (float) (2.5 * xdpi);
+        STROKE_WIDTH = text_size / 16;
+        mPaint.setTextSize(text_size);
         mPaint.setStrokeWidth(STROKE_WIDTH);
-
-        mCharacter = "A";
-        mHits = 0;
-        mTries = 0;
-    }
-
-    public void setCharacter(String character, int known) {
-        this.mCharacter = character;
-        int alpha = 10;
-        if (known == 0) alpha = 75;
-        else if (known == 1) alpha = 25;
-        mTextColor = Color.argb(alpha, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
-        invalidate();
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        this.w = w;
-        this.h = h;
-        setUpBitmap(w, h);
-        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     private void setUpBitmap(int width, int height) {
         this.mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mBitmap);
+        mPaint.setStyle(Paint.Style.FILL);
+
+        float text_width = mPaint.measureText(mCharacter);
+        if(text_width>canvas.getWidth()*0.88) {
+            text_size = (float) ((text_size) * (canvas.getWidth()*0.88 / (text_width + 10)));
+            STROKE_WIDTH = text_size / 16;
+            mPaint.setTextSize(text_size);
+            mPaint.setStrokeWidth(STROKE_WIDTH);
+        }
+        if(text_size>canvas.getHeight()*0.68) {
+            text_size = (float) (canvas.getHeight()*0.68);
+            STROKE_WIDTH = text_size / 16;
+            mPaint.setTextSize(text_size);
+            mPaint.setStrokeWidth(STROKE_WIDTH);
+        }
+
         xPos = (canvas.getWidth() / 2);
         yPos = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));
-        mPaint.setStyle(Paint.Style.FILL);
+
         canvas.drawText(mCharacter, xPos, yPos, mPaint);
         mPaint.setStyle(Paint.Style.STROKE);
 
@@ -111,6 +118,23 @@ public class PaintView extends View {
         }
     }
 
+    public void setCharacter(String character, int known) {
+        this.mCharacter = character;
+        int alpha = 10;
+        if (known == 0) alpha = 75;
+        else if (known == 1) alpha = 25;
+        mTextColor = Color.argb(alpha, Color.red(Color.LTGRAY), Color.green(Color.LTGRAY), Color.blue(Color.LTGRAY));
+        invalidate();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        this.w = w;
+        this.h = h;
+        setUpBitmap(w, h);
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
     public float finalizeBitmap() {
         Canvas canvas = new Canvas(mBitmap);
         mPaint.setColor(Color.RED);
@@ -127,11 +151,6 @@ public class PaintView extends View {
     }
 
     private boolean isInside(float x, float y) {
-        //x = x<0 ? left : x;
-        //x = x>right ? right : x;
-        //y = y<0 ? top : y;
-        //y = y>bottom ? bottom : y;
-
         int pixel = mBitmap.getPixel((int) x, (int) y);
         return pixel == Color.BLACK;
     }
