@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+
 public class PaintView extends View {
 
     private static final float TOLERANCE = 5;
@@ -96,6 +97,12 @@ public class PaintView extends View {
         top = yPos + rect.top;
         bottom = yPos + rect.bottom;
 
+        left = left < 0 ? 0 : left;
+        right = right > width ? width : right;
+        top = top < 0 ? 0 : top;
+        bottom = bottom > height ? height : bottom;
+
+
         for (int x = left; x < right; x++) {
             for (int y = top; y < bottom; y++) {
                 if (mBitmap.getPixel(x, y) == Color.BLACK)
@@ -120,6 +127,11 @@ public class PaintView extends View {
     }
 
     private boolean isInside(float x, float y) {
+        //x = x<0 ? left : x;
+        //x = x>right ? right : x;
+        //y = y<0 ? top : y;
+        //y = y>bottom ? bottom : y;
+
         int pixel = mBitmap.getPixel((int) x, (int) y);
         return pixel == Color.BLACK;
     }

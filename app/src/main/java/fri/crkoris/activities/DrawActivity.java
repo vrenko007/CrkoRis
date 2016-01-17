@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,11 +32,11 @@ public class DrawActivity extends Activity {
         Intent intent = getIntent();
         boolean challenge = intent.getExtras().getBoolean("challenge");
         mCharacter = intent.getParcelableExtra("character");
+        language = intent.getStringExtra("language");
         if(!challenge){
             setContentView(R.layout.activity_draw);
             myView = (PaintView) findViewById(R.id.paint_view_id);
             mListPosition = intent.getIntExtra("position", -1);
-            language = intent.getStringExtra("language");
             myView.setCharacter(mCharacter.getName(), mCharacter.getWellKnown());
         } else{
             setContentView(R.layout.activity_drawchallenge);
@@ -43,6 +44,7 @@ public class DrawActivity extends Activity {
             myView.setCharacter(mCharacter.getName(), mCharacter.getWellKnown());
             ChallengeMode();
         }
+
     }
 
     private void ChallengeMode(){
@@ -51,10 +53,15 @@ public class DrawActivity extends Activity {
                 if(millisUntilFinished<2000){
                     String sc = showScore();
                     score += Integer.parseInt(sc);
-                    ((TextView) findViewById(R.id.TV_drawscore)).setText("You scored : " + sc);
+                    if(sc.equals("0")){
+                        ((TextView) findViewById(R.id.TV_drawscore)).setText("Score: 0\nGame over\nTotal score: "+score);
+                    }
+                    else{
+                        ((TextView) findViewById(R.id.TV_drawscore)).setText("You scored : " + sc);
+                    }
                 }
                 else{
-                    final Toast toast = Toast.makeText(getApplicationContext(), String.valueOf((millisUntilFinished-2000) / 1000), Toast.LENGTH_SHORT);
+                    final Toast toast = Toast.makeText(getApplicationContext(), String.valueOf((millisUntilFinished - 2000) / 1000), Toast.LENGTH_SHORT);
                     toast.show();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -66,6 +73,9 @@ public class DrawActivity extends Activity {
                 }
             }
             public void onFinish() {
+                if(showScore().equals("0")){
+                    Stop();
+                }
                 finish();
 
             }
@@ -78,10 +88,13 @@ public class DrawActivity extends Activity {
 
     }
 
-    public void StopButton(View view) {
+    private void Stop(){
         ChallengeActivity.stop = true;
         Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
+    }
+    public void StopButton(View view) {
+        Stop();
     }
 
     private int calculateScore() {

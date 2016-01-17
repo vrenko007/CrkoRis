@@ -64,6 +64,7 @@ public class ChallengeActivity extends Activity implements OnItemSelectedListene
             Intent intent = new Intent(this, DrawActivity.class);
             intent.putExtra("character", crka);
             intent.putExtra("challenge",true);
+            intent.putExtra("language",language);
             startActivity(intent);
         }
     }
