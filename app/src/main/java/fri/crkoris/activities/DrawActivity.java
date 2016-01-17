@@ -91,6 +91,7 @@ public class DrawActivity extends Activity {
     private void Stop(){
         ChallengeActivity.stop = true;
         Intent intent = new Intent(this, ChallengeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
     public void StopButton(View view) {

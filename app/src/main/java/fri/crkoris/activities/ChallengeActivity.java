@@ -62,6 +62,7 @@ public class ChallengeActivity extends Activity implements OnItemSelectedListene
         while (iter.hasNext() && !stop) {
             CharacterModel crka = (CharacterModel) iter.next();
             Intent intent = new Intent(this, DrawActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("character", crka);
             intent.putExtra("challenge",true);
             intent.putExtra("language",language);
