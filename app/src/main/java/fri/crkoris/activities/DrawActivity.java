@@ -103,11 +103,7 @@ public class DrawActivity extends Activity {
         if (mCharacter.getWellKnown() == 2) fill_factor = 2;
         float filled = myView.finalizeBitmap() * 100 * fill_factor;
         if (filled > 100) filled = 100;
-        int score = (int) (accuracy * filled * 0.1);
-        score -= 900;
-        score *= 10;
-        if (score < 0) score = 0;
-        return score;
+        return (int) (accuracy * filled * 0.1);
     }
 
     public void finished(View v) {
@@ -132,9 +128,9 @@ public class DrawActivity extends Activity {
             int known = results[mListPosition].getWellKnown();
             if (score > results[mListPosition].getScore())
                 results[mListPosition].setScore(score);
-            if (score > 900 && known < 2)
+            if (score > 980 && known < 2)
                 results[mListPosition].setWellKnown(++known);
-            else if (score < 900 && known > 0)
+            else if (score < 980 && known > 0)
                 results[mListPosition].setWellKnown(--known);
             editor.putString(language + "_lrn", gson.toJson(results));
             editor.apply();

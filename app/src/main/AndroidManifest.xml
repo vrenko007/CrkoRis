@@ -35,15 +35,13 @@
             android:name=".activities.ChallengeActivity"
             android:label="Test" />
         <activity
-            android:name=".activities.SettingsActivity"
-            android:label="Settings" />
-        <activity
             android:name=".activities.StatisticsActivity"
             android:label="Statistics" />
         <activity
             android:name=".activities.DrawActivity"
             android:label="@string/title_activity_draw" />
-        <activity android:name=".activities.LanguageActivity"></activity>
+        <activity android:name=".activities.LanguageActivity"
+            android:label="Languages"/>
     </application>
 
 </manifest>

@@ -21,11 +21,6 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    public void OnClickButtonSettings(View view) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
     public void OnClickButtonTest(View view) {
         Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
