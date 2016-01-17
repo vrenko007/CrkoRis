@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import fri.crkoris.views.PaintView;
 public class DrawActivity extends Activity {
 
     public static int score;
+    private long mili;
     CharacterModel mCharacter;
     String language;
     private PaintView myView;
@@ -42,13 +44,19 @@ public class DrawActivity extends Activity {
             setContentView(R.layout.activity_drawchallenge);
             myView = (PaintView) findViewById(R.id.paint_view_id2);
             myView.setCharacter(mCharacter.getName(), mCharacter.getWellKnown());
+            if(language.equals("japanese")){
+                mili = 8000;
+            }
+            else{
+                mili = 6000;
+            }
             ChallengeMode();
         }
 
     }
 
     private void ChallengeMode(){
-        new CountDownTimer(6000, 1000) {
+        new CountDownTimer(mili, 1000) {
             public void onTick(long millisUntilFinished) {
                 if(millisUntilFinished<2000){
                     String sc = showScore();
@@ -61,15 +69,17 @@ public class DrawActivity extends Activity {
                     }
                 }
                 else{
-                    final Toast toast = Toast.makeText(getApplicationContext(), String.valueOf((millisUntilFinished - 2000) / 1000), Toast.LENGTH_SHORT);
-                    toast.show();
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            toast.cancel();
-                        }
-                    }, 1000);
+                    if(!ChallengeActivity.stop){
+                        final Toast toast = Toast.makeText(getApplicationContext(), String.valueOf((millisUntilFinished - 2000) / 1000), Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                            }
+                        }, 1000);
+                    }
                 }
             }
             public void onFinish() {

@@ -62,7 +62,6 @@ public class ChallengeActivity extends Activity implements OnItemSelectedListene
         while (iter.hasNext() && !stop) {
             CharacterModel crka = (CharacterModel) iter.next();
             Intent intent = new Intent(this, DrawActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("character", crka);
             intent.putExtra("challenge",true);
             intent.putExtra("language",language);
@@ -82,9 +81,11 @@ public class ChallengeActivity extends Activity implements OnItemSelectedListene
             editor.putString(language + "_challenge", String.valueOf(score));
             editor.apply();
             ((TextView)findViewById(R.id.TV_highscore)).setText("High score : " + score);
-            Toast toast = Toast.makeText(getApplicationContext(), "You set a new High score!!", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "You set a new High score :"+score, Toast.LENGTH_SHORT);
             toast.show();
         }
+        if(stop)
+            DrawActivity.score = 0;
     }
 
     private void loadScore(String lang){
