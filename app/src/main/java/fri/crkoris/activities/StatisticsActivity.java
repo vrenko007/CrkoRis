@@ -74,19 +74,26 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
         String maxLetterTotal = "/";
         int totalTotal = 0;
         int length = 0;
+        int Vsecrke = LearningActivity.firstTimeSetUpEn.length+LearningActivity.firstTimeSetUpJapKNormal.length+LearningActivity.firstTimeSetUpSlo.length;
         for(Map.Entry<String,CharacterModel[]> entry : map.entrySet()){
+            //Vsecrke += entry.getValue().length;
             if(entry.getValue().length == 0){
-                results.put(entry.getKey(), new String[] {"0","0","/","0","/","0"});
+                results.put(entry.getKey(), new String[] {"0","0","/","0","/","0","0"});
                 continue;
             }
-            length += entry.getValue().length;
+            int st_resenih = 0;
             int min = 5;
             String minLetter = "";
             int max = -1;
             String maxLetter = "";
             int total = 0;
             for(CharacterModel cm : entry.getValue()){
-                int score = cm.getScore() == -1 ? 0 : cm.getScore();
+                int score = cm.getScore();
+                if(score == -1)
+                    score = 0;
+                else
+                    st_resenih++;
+
                 if(score > max){
                     max = score;
                     maxLetter = cm.getName();
@@ -106,13 +113,16 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
                 minTotal = min;
                 minLetterTotal = minLetter;
             }
-            int average = total / entry.getValue().length;
-
-            results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min)});
+            //int average = total / entry.getValue().length;
+            int average = st_resenih==0? 0: total / st_resenih;
+            length += st_resenih;
+            int percentCompleted = (st_resenih*100)/entry.getValue().length;
+            results.put(entry.getKey(), new String[] {String.valueOf(total),String.valueOf(average),maxLetter,String.valueOf(max),minLetter,String.valueOf(min),String.valueOf(percentCompleted)});
         }
 
         int averageTotal = length == 0 ? 0 : totalTotal / length;
-        results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal)});
+        int percentCompleted = (length*100) / Vsecrke;
+        results.put("all Languages",new String[] {String.valueOf(totalTotal),String.valueOf(averageTotal),maxLetterTotal,String.valueOf(maxTotal),minLetterTotal,String.valueOf(minTotal),String.valueOf(percentCompleted)});
         return results;
     }
 
@@ -127,6 +137,8 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
         ((TextView)findViewById(R.id.TV_avScore)).setText("Your average score is : " + results[1]);
         ((TextView)findViewById(R.id.TV_maxLetter)).setText("You scored highest on letter '"+results[2]+"' with score of "+results[3]);
         ((TextView)findViewById(R.id.TV_minLetter)).setText("You scored lowest on letter '"+results[4]+"' with score of "+results[5]);
+        ((TextView)findViewById(R.id.TV_percent)).setText("Percentage of letters completed : "+results[6]+"%");
+
         ((TextView)findViewById(R.id.TV_language)).setText(language.toUpperCase());
 
 
