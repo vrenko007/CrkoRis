@@ -102,7 +102,7 @@ public class StatisticsActivity extends Activity implements OnItemSelectedListen
                 maxTotal = max;
                 maxLetterTotal = maxLetter;
             }
-            if(min < minTotal){
+            if(min <= minTotal){
                 minTotal = min;
                 minLetterTotal = minLetter;
             }
